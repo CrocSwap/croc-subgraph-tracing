@@ -1,1 +1,1 @@
-# crocswap-subgraph-tracing
+# croc-subgraph-tracing
