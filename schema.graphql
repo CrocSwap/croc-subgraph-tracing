@@ -61,6 +61,10 @@ type Token @entity {
   id: Bytes!
   "token decimals"
   decimals: BigInt!
+  "token symbol"
+  symbol: String
+  "token name"
+  name: String
 
   "total volume of the token traded across all pools"
   totalVolume: BigInt!

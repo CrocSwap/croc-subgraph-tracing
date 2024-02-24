@@ -20,13 +20,22 @@ import { AggEvent, LatestIndex, Pool, Swap, Token } from "../generated/schema"
 
 /****************************** DATA FETCHING ******************************/
 
+function fetchTokenName(tokenAddress: Address): string {
+  let contract = ERC20.bind(tokenAddress)
+  let nameResult = contract.try_name()
+  return nameResult.reverted ? "unknown" : nameResult.value
+}
+
+function fetchTokenSymbol(tokenAddress: Address): string {
+  let contract = ERC20.bind(tokenAddress)
+  let symbolResult = contract.try_symbol()
+  return symbolResult.reverted ? "UNKNOWN" : symbolResult.value
+}
+
 function fetchTokenDecimals(tokenAddress: Address): BigInt {
   let contract = ERC20.bind(tokenAddress)
   let decimalResult = contract.try_decimals()
-  if (!decimalResult.reverted) {
-    return BigInt.fromI32(decimalResult.value as i32)
-  }
-  return BigInt.fromI32(18)
+  return decimalResult.reverted ? BigInt.fromI32(18) : BigInt.fromI32(decimalResult.value)
 }
 
 /***************************** DATA MANIPULATION *****************************/
@@ -270,6 +279,8 @@ export function createToken(token: Address): void {
   if (Token.load(token) === null) {
     const tokenEntity = new Token(token)
     tokenEntity.decimals = fetchTokenDecimals(token)
+    tokenEntity.name = fetchTokenName(token)
+    tokenEntity.symbol = fetchTokenSymbol(token)
     tokenEntity.totalVolume = BigInt.fromI32(0)
     tokenEntity.save()
   }
