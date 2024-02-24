@@ -5,8 +5,10 @@
     "codegen": "graph codegen",
     "build": "graph build"
   },
-  "dependencies": {
+  "devDependencies": {
     "@graphprotocol/graph-cli": "0.60.0",
-    "@graphprotocol/graph-ts": "0.31.0"
+    "@graphprotocol/graph-ts": "^0.33.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
   }
 }

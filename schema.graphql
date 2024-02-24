@@ -1,117 +1,69 @@
 """
-A Swap entity represents an atomic swap of a base token for a quote token
-made on either CrocSwap or Uniswap V3.
+A Swap entity represents an atomic swap of one token for another token
+on Ambient.
 """
 type Swap @entity(immutable: true) {
+  "unique id for the swap transaction"
   id: Bytes!
-  transactionHash: Bytes!
-  callIndex: Int!
-  user: Bytes!
-  block: BigInt!
-  transactionIndex: BigInt!
-  time: BigInt!
-  pool: Pool!
-  isBuy: Boolean!
-  inBaseQty: Boolean!
-  qty: BigInt!
-  limitPrice: BigDecimal
-  minOut: BigInt
-  baseFlow: BigInt!
-  quoteFlow: BigInt!
-  price: BigDecimal
-  callSource: String!
-  dex: String!
-}
 
-"""
-A LiquidityChange entity represents a single modification to a single
-liquidity position made on CrocSwap. LiquidityChanges are categorized
-according to their changeType, which can be equal to mint, burn, harvest,
-claim, or recover.
-"""
-type LiquidityChange @entity(immutable: true) {
-  id: Bytes!
-  transactionHash: Bytes!
+  "transaction hash"
+  hash: Bytes!
+  "unique index which increments upward from zero for every unique pair of (event/entity type, transaction hash)"
   callIndex: Int!
-  pool: Pool!
-  user: Bytes!
+  "transaction timestamp"
+  timestamp: BigInt!
+  "block number"
   block: BigInt!
-  time: BigInt!
-  positionType: String!
-  changeType: String!
-  bidTick: Int
-  askTick: Int
-  isBid: Boolean!
-  liq: BigInt
-  baseFlow: BigInt
-  quoteFlow: BigInt
-  callSource: String!
-  pivotTime: BigInt
+
+  "user address"
+  user: Bytes!
+
+  "liquidity pool that the swap was executed on"
+  pool: Pool!
+
+  "base token amount change in the pool - negative indicates a credit that the caller received"
+  baseFlow: BigInt!
+  "quote token amount change in the pool - negative indicates a credit that the caller received"
+  quoteFlow: BigInt!
+
+  "finalized price of the swap calculated on baseFlow/quoteFlow, beware of decimal differences"
+  price: BigDecimal
 }
 
 """
 A Pool represents a single liquidity pool on CrocSwap, which is uniquely
-specified by a base token, a quote token, and a poolIdx. The ID of the Pool
-is the same as the poolHash used internally in CrocSwap contracts.
+specified by a base token, a quote token, and a poolIdx.
 """
-type Pool @entity(immutable: true) {
+type Pool @entity {
+  "poolHash used internally in CrocSwap contracts"
   id: Bytes!
-  blockCreate: BigInt!
-  timeCreate: BigInt!
-  base: Bytes!
-  quote: Bytes!
+  "base token entity"
+  base: Token!
+  "quote token entity"
+  quote: Token!
+  "poolIdx used for the pool"
   poolIdx: BigInt!
-  template: PoolTemplate
+
+  "total volume of base token traded in the pool"
+  baseVolume: BigInt!
+  "total volume of quote token traded in the pool"
+  quoteVolume: BigInt!
+
+  "swap entities associated with this pool"
   swaps: [Swap!]! @derivedFrom(field: "pool")
-  liquidityChanges: [LiquidityChange!]! @derivedFrom(field: "pool")
 }
 
 """
-PoolTemplate represents a pool type pattern to create new pools
+A Token entity represents a token that is traded on CrocSwap.
 """
-type PoolTemplate @entity(immutable: false) {
+type Token @entity {
+  "unique id for the token contract address"
   id: Bytes!
-  blockInit: BigInt!
-  timeInit: BigInt!
-  blockRevise: BigInt!
-  timeRevise: BigInt!
-  poolIdx: BigInt!
-  feeRate: Int!
-  enabled: Boolean!
-  pools: [Pool!]! @derivedFrom(field: "template")
-}
+  "token decimals"
+  decimals: BigInt!
 
-"""
-A KnockoutCross is an exact copy of the data emitted in a KnockoutCross event
-emitted by the CrocSwap DEX. There is an exact 1:1 correspondence between
-emitted events and KnockoutCross entities created by the subgraph.
-"""
-type KnockoutCross @entity(immutable: true) {
-  id: Bytes!
-  block: BigInt!
-  time: BigInt!
-  transactionHash: Bytes!
-  pool: Pool!
-  tick: Int!
-  isBid: Boolean!
-  pivotTime: BigInt!
-  feeMileage: BigInt!
-}
-
-"""
-A UserBalance entity represents the first time that a user might have
-conceivably "received" a given token from the CrocSwap DEX, such as via
-the output of a swap or via the burning of a liquidity position. These
-entities collectively represent the universe of tokens for which users
-might have nonzero internal DEX balances.
-"""
-type UserBalance @entity(immutable: true) {
-  id: Bytes!
-  transactionHash: Bytes!
-  block: BigInt!
-  time: BigInt!
-  user: Bytes!
-  token: Bytes!
+  "total volume of the token traded across all pools"
+  totalVolume: BigInt!
 }
 
 """
@@ -122,20 +74,6 @@ would otherwise be created within the same transaction.
 type LatestIndex @entity {
   id: Bytes!
   callIndex: Int!
-}
-
-"""
-A FeeChange represents an update to the swap fee setting on a given CrocSwap
-liquidity pool.
-"""
-type FeeChange @entity(immutable: true) {
-  id: Bytes!
-  transactionHash: Bytes!
-  callIndex: Int!
-  block: BigInt!
-  time: BigInt!
-  pool: Pool!
-  feeRate: Int!
 }
 
 """
@@ -151,7 +89,7 @@ type AggEvent @entity(immutable: true) {
   time: BigInt!
   baseFlow: BigInt
   quoteFlow: BigInt
-  isSwap:  Boolean!
+  isSwap: Boolean!
   isLiq: Boolean!
   isFeeChange: Boolean!
   swapPrice: BigDecimal
