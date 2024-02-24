@@ -71,13 +71,9 @@ dataSources:
       callHandlers:
         - function: userCmd(bytes)
           handler: handleColdPathCall
-        - function: protocolCmd(bytes)
-          handler: handleColdPathProtocolCmdCall
       eventHandlers:
         - event: CrocColdCmd(bytes)
           handler: handleColdPathEvent
-        - event: CrocColdProtocolCmd(bytes)
-          handler: handleColdPathProtocolCmdEvent
       file: ./src/mapping.ts
   - kind: ethereum
     name: MicroPaths
@@ -92,8 +88,6 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Swap
-        - Position
-        - LiquidityChange
       abis:
         - name: MicroPaths
           file: ./abis/MicroPaths.json
