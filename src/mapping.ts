@@ -278,9 +278,16 @@ export function updatePoolVolume(poolHash: Bytes, baseFlow: BigInt, quoteFlow: B
 export function createToken(token: Address): void {
   if (Token.load(token) === null) {
     const tokenEntity = new Token(token)
-    tokenEntity.decimals = fetchTokenDecimals(token)
-    tokenEntity.name = fetchTokenName(token)
-    tokenEntity.symbol = fetchTokenSymbol(token)
+
+    if (token.toHexString() === "0x0000000000000000000000000000000000000000") {
+      tokenEntity.decimals = BigInt.fromI32(18)
+      tokenEntity.name = "Ethereum"
+      tokenEntity.symbol = "ETH"
+    } else {
+      tokenEntity.decimals = fetchTokenDecimals(token)
+      tokenEntity.name = fetchTokenName(token)
+      tokenEntity.symbol = fetchTokenSymbol(token)
+    }
     tokenEntity.totalVolume = BigInt.fromI32(0)
     tokenEntity.save()
   }
