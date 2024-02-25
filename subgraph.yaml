@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: CrocSwapDex
-    network: mainnet
+    network: sepolia
     source:
       abi: CrocSwapDex
-      address: "0xAaAaAAAaA24eEeb8d57D431224f73832bC34f688"
-      startBlock: 17361660
+      address: "0xFb8A46E7963E6397DBB4B2E1c0B3f0464fb5BDFF"
+      startBlock: 5342000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -28,11 +28,11 @@ dataSources:
       file: ./src/mapping.ts
   - kind: ethereum
     name: HotProxy
-    network: mainnet
+    network: sepolia
     source:
       abi: HotProxy
-      address: "0xa9Dd587ad17Aed82CAc5596B16DCc9DeFEc885Cb"
-      startBlock: 17361660
+      address: "0x0FfD1249f72415975fb8710b0dF5415E9cff05C0"
+      startBlock: 5342000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -51,11 +51,11 @@ dataSources:
       file: ./src/mapping.ts
   - kind: ethereum
     name: ColdPath
-    network: mainnet
+    network: sepolia
     source:
       abi: ColdPath
-      address: "0xF8fe6fA0D9c778F8d814c838758B57a9Cf1dD710"
-      startBlock: 17361660
+      address: "0x804Fa484e7221c79D88BD7Fd3cA3D7D9A539459C"
+      startBlock: 5342000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -78,11 +78,11 @@ dataSources:
       file: ./src/mapping.ts
   - kind: ethereum
     name: WarmPath
-    network: mainnet
+    network: sepolia
     source:
       abi: WarmPath
-      address: "0xd268767BE4597151Ce2BB4a70A9E368ff26cB195"
-      startBlock: 17361660
+      address: "0x51eADaf06fB865790ac4c7c71Ad6E994d006e9D9"
+      startBlock: 5342000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -102,11 +102,11 @@ dataSources:
       file: ./src/mapping.ts
   - kind: ethereum
     name: MicroPaths
-    network: mainnet
+    network: sepolia
     source:
       abi: MicroPaths
-      address: "0xf241bEf0Ea64020655C70963ef81Fea333752367"
-      startBlock: 17361660
+      address: "0x7bfe1696AFE70Dff3908F37dF5B66574B8d5c52F"
+      startBlock: 5342000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -143,11 +143,11 @@ dataSources:
       file: ./src/mapping.ts
   - kind: ethereum
     name: MicroPaths2
-    network: mainnet
+    network: sepolia
     source:
       abi: MicroPaths
-      address: "0x396d435f5d0756c6f7EdD82E6C67BDc6C093985d"
-      startBlock: 17361660
+      address: "0x2b3Fd33d35e2cAA6E3eeC4dBB5B140F1B0aE6513"
+      startBlock: 5342000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -184,11 +184,11 @@ dataSources:
       file: ./src/mapping.ts
   - kind: ethereum
     name: KnockoutLiqPath
-    network: mainnet
+    network: sepolia
     source:
       abi: KnockoutLiqPath
-      address: "0x7F5D75AdE75646919c923C98D53E9Cc7Be7ea794"
-      startBlock: 17361660
+      address: "0x8aeE94DF7e9A50Ca36DA563758BaDe305C0B41D1"
+      startBlock: 5342000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -208,11 +208,11 @@ dataSources:
       file: ./src/mapping.ts
   - kind: ethereum
     name: KnockoutCounter
-    network: mainnet
+    network: sepolia
     source:
       abi: KnockoutCounter
-      address: "0xAaAaAAAaA24eEeb8d57D431224f73832bC34f688"
-      startBlock: 17361660
+      address: "0xFb8A46E7963E6397DBB4B2E1c0B3f0464fb5BDFF"
+      startBlock: 5342000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
