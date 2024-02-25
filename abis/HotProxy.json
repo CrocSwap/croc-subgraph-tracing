@@ -45,7 +45,18 @@
       }
     ],
     "name": "userCmd",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "int128",
+        "name": "baseFlow",
+        "type": "int128"
+      },
+      {
+        "internalType": "int128",
+        "name": "quoteFlow",
+        "type": "int128"
+      }
+    ],
     "stateMutability": "payable",
     "type": "function"
   },

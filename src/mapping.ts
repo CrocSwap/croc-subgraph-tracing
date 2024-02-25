@@ -394,7 +394,7 @@ export function handleDirectSwapEvent(event: CrocSwap): void {
 
 /************************ HANDLERS FOR HOTPROXY SWAPS ************************/
 
-export function handleHotProxy(inputs: Bytes, transaction: ethereum.Transaction, block: ethereum.Block, callSource: string): void {
+export function handleHotProxy(inputs: Bytes, baseFlow: BigInt, quoteFlow: BigInt, transaction: ethereum.Transaction, block: ethereum.Block, callSource: string): void {
   const params = decodeAbi(inputs, "(address,address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8)")
   const base = params[0].toAddress()
   const quote = params[1].toAddress()
@@ -416,8 +416,8 @@ export function handleHotProxy(inputs: Bytes, transaction: ethereum.Transaction,
     qty,
     limitPrice,
     minOut,
-    BigInt.fromI32(0), // replace
-    BigInt.fromI32(0), // replace
+    baseFlow,
+    quoteFlow,
     callSource,
     "croc"
   )
@@ -425,12 +425,13 @@ export function handleHotProxy(inputs: Bytes, transaction: ethereum.Transaction,
 
 // Handler for a userCmd() swap call made to HotProxy
 export function handleHotProxyCall(call: HotProxyUserCmdCall): void {
-  handleHotProxy(call.inputs.input, call.transaction, call.block, "hotproxy")
+  handleHotProxy(call.inputs.input, call.outputs.baseFlow, call.outputs.quoteFlow, 
+    call.transaction, call.block, "hotproxy")
 }
 
 // event CrocHotCmd (bytes input, int128 baseFlow, int128 quoteFlow);
 export function handleHotProxyEvent(event: CrocHotCmd): void {
-  handleHotProxy(event.params.input, event.transaction, event.block, "hotproxy_event")
+  handleHotProxy(event.params.input, event.params.baseFlow, event.params.quoteFlow, event.transaction, event.block, "hotproxy_event")
 }
 
 /******************* HANDLERS FOR COLDPATH USERCMD() CALLS *******************/
